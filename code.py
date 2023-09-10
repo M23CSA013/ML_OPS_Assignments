@@ -22,7 +22,11 @@ clf = svm.SVC(gamma=0.001)
 #X_train, X_test, y_train, y_test = train_test_split(
 #    data, digits.target, test_size=0.5, shuffle=False
 #)
+
 #clf.fit(X_train, y_train)
+
+#clf.fit(X_train, Y_train)
+
 #predicted = clf.predict(X_test)
 
 def train_dev_test_split(X, Y, test_size, dev_size):
@@ -39,7 +43,17 @@ def predict_and_eval(model, X_test, Y_test):
     predicted_val = model.predict(X_test)
     return predicted_val
 
+
 X_train, X_test, Y_train, Y_test, dev_train, dev_test = train_dev_test_split(data, digits.target, 0.3, 0.3)
+
+
+
+X_train, X_test, Y_train, Y_test, dev_train, dev_test = train_dev_test_split(data, digits.target, 0.3, 0.3)
+
+print("X_train shape:", X_train.shape)
+print("X_test shape:", X_test.shape)
+print("Y_train shape:", Y_train.shape)
+print("Y_test shape:", Y_test.shape)
 
 
 _, axes = plt.subplots(nrows=1, ncols=4, figsize=(10, 3))
