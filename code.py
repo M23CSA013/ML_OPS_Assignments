@@ -17,6 +17,14 @@ plt.show()
 n_samples = len(digits.images)
 data = digits.images.reshape((n_samples, -1))
 
+height, width = image.shape[:2]
+  
+# display width and height
+print("Q1)")
+print("The height of the image is: ", height)
+print("The width of the image is: ", width)
+print("Total number of samples in dataset:", n_samples)
+
 clf = svm.SVC(gamma=0.001)
 
 #X_train, X_test, y_train, y_test = train_test_split(
@@ -32,7 +40,13 @@ def train_dev_test_split(X, Y, test_size, dev_size):
     dev_train, X_test, dev_test, Y_test = train_test_split(
         X_test, Y_test, test_size= dev_size/(dev_size + test_size), shuffle = False
     )
+    print("X_train Size: ", X_train.shape)
+    print("X_test Size: ", X_test.shape)
+    print("Y_train Size: ", Y_train.shape)
+    print("Y_test Size: ", Y_test.shape)
+    print("dev_test Size: ", dev_test.shape)
     return X_train, X_test, Y_train, Y_test, dev_train, dev_test
+    
 
 def predict_and_eval(model, X_test, Y_test):
     model.fit(X_train, Y_train)
