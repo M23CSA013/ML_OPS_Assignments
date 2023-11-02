@@ -1,0 +1,9 @@
+#FROM ubuntu:23.10
+FROM python:3.9.17
+COPY . /newdock/
+#RUN apt-get update
+#RUN apt-get install -y python3 python3-pip
+RUN pip3 install -r /newdock/requirements.txt
+
+WORKDIR /newdock
+CMD ["pytest"]
