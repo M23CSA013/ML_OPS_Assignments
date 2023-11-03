@@ -103,25 +103,28 @@ def train_model(x, y, model_params, model_type='svm'):
     return model 
 
 
-def tune_hparams(X_train, y_train, X_dev, y_dev, all_combos,metric,model_type='svm'):
+def tune_hparams(X_train, y_train, X_dev, y_dev, all_combos,metric,model_type):
     best_accuracy = -1
     best_model=None
     best_hparams = None
     best_model_path=""
+    cur_model = None
+    print("[LOG] model_type",model_type)
 
     for param in all_combos:
-        if model_type=="svm":
+        if model_type=="Production_Model_svm":
             cur_model = train_model(X_train,y_train,{'gamma':param[0],'C':param[1]},model_type='svm')
-        if model_type=="tree":
+        if model_type=="Candidate_Model_tree":
             cur_model = train_model(X_train,y_train,{'max_depth':param[0]},model_type='tree')    
         val_accuracy = p_and_eval(cur_model,metric,X_dev,y_dev)
         if val_accuracy > best_accuracy:
             best_accuracy = val_accuracy
             best_hparams=param
-            best_model_path = "./models/{}_{}.joblib".format(model_type, param).replace(":", "_")
+            best_model_path = "host_volume/models/{}_{}.joblib".format(model_type, param).replace(":", "_")
             best_model = cur_model
         
-    dump(best_model,best_model_path) 
+    dump(best_model,best_model_path)
+    # dump(best_model,"models/model.pkl") 
     # print("Model save at {}".format(best_model_path))   
     return best_hparams, best_model_path, best_accuracy     
 
