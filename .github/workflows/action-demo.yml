@@ -21,5 +21,7 @@ jobs:
       - run: echo "Adding a statement for the quiz!"
       - name: Install dep
         run:  pip3 install --no-cache-dir -r requirements.txt
+      - name: Run Pytest
+        run: pytest
       - name: Run experiment
-        run: python code.py
+        run: python new_utils.py
