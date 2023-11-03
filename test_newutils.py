@@ -1,23 +1,27 @@
-from new_utils import hparams_combinations
+from new_utils import get_all_h_param_comb_svm,get_all_h_param_comb_tree
 
-def test_for_hparam_combinations_count():
-    gamma_list=[0.001,0.01,0.1,1]
-    C_list=[1,10,100,1000]
-    h_params_combinations = hparams_combinations(gamma_list,C_list)
+def test_for_hyperparameter_combination_count_svm():
+    gamma_list = [0.01, 0.005, 0.001, 0.0005, 0.0001]
+    c_list = [0.1, 0.2, 0.5, 0.7, 1, 2, 5, 7, 10]
+    all_combos = get_all_h_param_comb_svm(gamma_list,c_list)
 
-    assert len(h_params_combinations) == len(gamma_list)*len(C_list)
+    assert len(all_combos) == len(gamma_list)*len(c_list)
 
-def test_for_hparam_combinations_values():
-    gamma_list=[0.001,0.01]
-    C_list=[1]
-    #h_params={}
-    #h_params['gamma']=gamma_list
-    #h_params['C']=C_list
-    h_params_combinations = hparams_combinations(gamma_list,C_list)
+def test_for_hyperparameter_combination_values_svm():
+    gamma_list = [0.01, 0.005]
+    c_list = [0.1]
+    all_combos = get_all_h_param_comb_svm(gamma_list,c_list)
 
-    expected_param_combo_1 = (0.001,1)
-    expected_param_combo_2 = (0.001,1)
+    assert (0.01,0.1) in all_combos and (0.005,0.1) in all_combos
 
+def test_for_hyperparameter_combination_count_tree():
+    depth_list = [1,10,15,5,100]
+    all_combos = get_all_h_param_comb_tree(depth_list)
 
+    assert len(all_combos) == len(depth_list)
 
-    assert (expected_param_combo_1 in h_params_combinations) and (expected_param_combo_2 in h_params_combinations)
+def test_for_hyperparameter_combination_values_tree():
+    depth_list = [1,10,15,5,100] 
+    all_combos = get_all_h_param_comb_tree(depth_list)
+
+    assert (5,) in all_combos
