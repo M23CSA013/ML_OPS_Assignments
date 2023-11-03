@@ -17,7 +17,7 @@ import sys
 # Import datasets, classifiers and performance metrics
 from sklearn import datasets, metrics, svm
 from sklearn.model_selection import train_test_split
-from utils import data_preprocess, train_model, read_digits, split_train_dev_test, p_and_eval,get_all_h_param_comb_svm,get_all_h_param_comb_tree,tune_hparams
+from new_utils import data_preprocess, train_model, read_digits, split_train_dev_test, p_and_eval,get_all_h_param_comb_svm,get_all_h_param_comb_tree,tune_hparams
 import pdb
 from joblib import dump,load
 import numpy as np
