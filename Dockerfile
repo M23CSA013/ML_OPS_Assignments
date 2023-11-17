@@ -1,7 +1,7 @@
 #FROM ubuntu:23.10
 FROM python:3.9.17
-COPY ../*.py /newdock/
-COPY ../requirements.txt /newdock
+COPY ./api/app.py /newdock/
+COPY ./requirements.txt /newdock
 WORKDIR /newdock
 
 #RUN apt-get update
@@ -9,7 +9,13 @@ WORKDIR /newdock
 
 RUN  pip install --upgrade pip
 # RUN pip3 install -U scikit-learn --no-cache-dir
-RUN ls
+# RUN ls
 RUN pip3 install -r requirements.txt --no-cache-dir
 
-CMD ["python","-u","digits.py"]
+#ENV FLASK_APP=newdock/hello.py
+#CMD ["flask", "run", "--host=0.0.0.0"]
+#CMD ["python","-u","digits.py"]
+#CMD [ "python3","-u","hello.py", "--host=0.0.0.0" ]
+ENV FLASK_APP=api/app
+EXPOSE 80
+CMD [ "python3","-m","flask", "run", "--host=0.0.0.0", "--port=80"]
