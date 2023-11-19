@@ -12,11 +12,23 @@ import pandas as pd
 from flask import Flask, request, jsonify
 from PIL import Image
 import numpy as np
+import os
 
 app = Flask(__name__)
 
-model = load('./models/Production_Model_svm_(0.001, 1).joblib')
+current_directory = os.getcwd()
 
+# Construct the path to the file just outside the working directory
+folder_path = os.path.join(current_directory, 'models')
+extension = '.joblib'
+all_files = os.listdir(folder_path)
+matching_files = [file for file in all_files if file.endswith(extension)]
+
+file_path = os.path.join(folder_path, matching_files[0])
+
+model = load(file_path)
+
+# model = load('./models/Production_Model_svm_(0.001, 1).joblib')
 
 @app.route("/hello/<val>")
 def hello_world(val):
