@@ -14,46 +14,45 @@ from PIL import Image
 import numpy as np
 import os
 
-app = Flask(__name__)
+app = Flask(_name_)
 
-current_directory = os.getcwd()
+# Define a function to load models
+def load_model(model_type):
+    model_directory = './models'
+    model_file = f'Production_Model_{model_type}.joblib'
+    model_path = os.path.join(model_directory, model_file)
+    if os.path.exists(model_path):
+        return load(model_path)
+    else:
+        return None
 
-# Construct the path to the file just outside the working directory
-folder_path = os.path.join(current_directory, 'models')
-extension = '.joblib'
-all_files = os.listdir(folder_path)
-matching_files = [file for file in all_files if file.endswith(extension)]
+# Load the models
+svm_model = load_model('svm')
+lr_model = load_model('lr')
+tree_model = load_model('tree')
 
-file_path = os.path.join(folder_path, matching_files[0])
-
-model = load(file_path)
-
-# model = load('./models/Production_Model_svm_(0.001, 1).joblib')
-
-@app.route("/hello/<val>")
-def hello_world(val):
-    return "<p>Hello, World!</p>" + val 
-
-@app.route('/predict', methods=['POST'])
-def compare_digits():
+@app.route('/predict/<model_type>', methods=['POST'])
+def predict_digit(model_type):
     try:
-        # Get the two image files from the request
+        if model_type == 'svm' and svm_model is not None:
+            model = svm_model
+        elif model_type == 'lr' and lr_model is not None:
+            model = lr_model
+        elif model_type == 'tree' and tree_model is not None:
+            model = tree_model
+        else:
+            return jsonify({'error': 'Invalid model type'})
+
         data = request.get_json()  # Parse JSON data from the request body
-        image1 = data.get('image1', [])
-        image2 = data.get('image2', [])
+        image = data.get('image', [])
 
-        # Preprocess the images and make predictions
-        digit1 = predict_digit(image1)
-        digit2 = predict_digit(image2)
+        digit = predict_digit_with_model(model, image)
 
-        # Compare the predicted digits and return the result
-        result = digit1 == digit2
-
-        return jsonify({'result': result})
+        return jsonify({'result': digit})
     except Exception as e:
         return jsonify({'error': str(e)})
-    
-def predict_digit(image):
+
+def predict_digit_with_model(model, image):
     try:
         # Convert the input list to a numpy array and preprocess for prediction
         img_array = np.array(image, dtype=np.float32).reshape(1, 28, 28, 1) / 255.0
@@ -65,6 +64,5 @@ def predict_digit(image):
     except Exception as e:
         return str(e)
 
-
-if __name__ == '__main__':
-    app.run()
+if _name_ == '_main_':
+    app.run()
