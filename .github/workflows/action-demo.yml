@@ -21,4 +21,4 @@ jobs:
       - name: Install dep
         run:  pip3 install --no-cache-dir -r requirements.txt
       - name: Run test cases
-        run: python3 digits.py --runs 1 --test_sizes 0.3 --dev_sizes 0.2 --models lr
+        run: python3 major_digits.py --runs 1 --test_sizes 0.3 --dev_sizes 0.2 --models lr
